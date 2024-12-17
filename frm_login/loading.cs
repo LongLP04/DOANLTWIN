@@ -33,8 +33,8 @@ namespace frm_login
             }    
            else
             {
-                guna2CircleProgressBar1.Value += 2;
-                lbl_numberload.Text = (Convert.ToInt32(lbl_numberload.Text) + 2).ToString();
+                guna2CircleProgressBar1.Value += 4;
+                lbl_numberload.Text = (Convert.ToInt32(lbl_numberload.Text) + 4).ToString();
             }
         }
 
