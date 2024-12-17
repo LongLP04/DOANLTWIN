@@ -65,11 +65,11 @@
     <Compile Include="frm_danhsachbenhnhan.Designer.cs">
       <DependentUpon>frm_danhsachbenhnhan.cs</DependentUpon>
     </Compile>
-    <Compile Include="frm_doanhhthu.cs">
+    <Compile Include="frm_doanhthu.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frm_doanhhthu.Designer.cs">
-      <DependentUpon>frm_doanhhthu.cs</DependentUpon>
+    <Compile Include="frm_doanhthu.Designer.cs">
+      <DependentUpon>frm_doanhthu.cs</DependentUpon>
     </Compile>
     <Compile Include="frm_lichhen.cs">
       <SubType>Form</SubType>
@@ -88,6 +88,12 @@
     </Compile>
     <Compile Include="frm_setting.Designer.cs">
       <DependentUpon>frm_setting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frm_thuoc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frm_thuoc.Designer.cs">
+      <DependentUpon>frm_thuoc.cs</DependentUpon>
     </Compile>
     <Compile Include="frm_tongquan.cs">
       <SubType>Form</SubType>
@@ -109,8 +115,8 @@
     <EmbeddedResource Include="frm_danhsachbenhnhan.resx">
       <DependentUpon>frm_danhsachbenhnhan.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frm_doanhhthu.resx">
-      <DependentUpon>frm_doanhhthu.cs</DependentUpon>
+    <EmbeddedResource Include="frm_doanhthu.resx">
+      <DependentUpon>frm_doanhthu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frm_lichhen.resx">
       <DependentUpon>frm_lichhen.cs</DependentUpon>
@@ -120,6 +126,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frm_setting.resx">
       <DependentUpon>frm_setting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frm_thuoc.resx">
+      <DependentUpon>frm_thuoc.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frm_tongquan.resx">
       <DependentUpon>frm_tongquan.cs</DependentUpon>
@@ -165,6 +174,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\setting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\THUOC.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

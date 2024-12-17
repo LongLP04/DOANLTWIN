@@ -21,5 +21,34 @@ namespace frm_login
         {
 
         }
+
+      
+
+        private void btn_hen_Click(object sender, EventArgs e)
+        {
+            //chuyen sang form lichhen
+        }
+
+        private void btn_gap_Click(object sender, EventArgs e)
+        {
+            //chuyen sang form lichhen
+        }
+
+        private void btn_doanhso_Click(object sender, EventArgs e)
+        {
+            //chuyen sang form doanhthu
+        }
+
+        private void btn_benhnhann_Click(object sender, EventArgs e)
+        {
+          
+        }
+
+        private void btn_lichhenn_Click(object sender, EventArgs e)
+        {
+          
+        }
+
+       
     }
 }

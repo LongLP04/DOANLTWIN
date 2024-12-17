@@ -63,5 +63,9 @@ namespace frm_login
             }
         }
 
+        private void dta_dsbenhnhan_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

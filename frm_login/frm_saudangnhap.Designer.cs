@@ -33,6 +33,7 @@ namespace frm_login
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_saudangnhap));
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
+            this.guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
             this.btn_doanhthu = new Guna.UI2.WinForms.Guna2Button();
             this.btn_thongtin = new Guna.UI2.WinForms.Guna2Button();
             this.btn_caidat = new Guna.UI2.WinForms.Guna2Button();
@@ -61,6 +62,7 @@ namespace frm_login
             // guna2Panel1
             // 
             this.guna2Panel1.BackColor = System.Drawing.Color.Transparent;
+            this.guna2Panel1.Controls.Add(this.guna2Button1);
             this.guna2Panel1.Controls.Add(this.btn_doanhthu);
             this.guna2Panel1.Controls.Add(this.btn_thongtin);
             this.guna2Panel1.Controls.Add(this.btn_caidat);
@@ -74,6 +76,29 @@ namespace frm_login
             this.guna2Panel1.Name = "guna2Panel1";
             this.guna2Panel1.Size = new System.Drawing.Size(168, 754);
             this.guna2Panel1.TabIndex = 0;
+            // 
+            // guna2Button1
+            // 
+            this.guna2Button1.BackColor = System.Drawing.Color.White;
+            this.guna2Button1.CustomBorderThickness = new System.Windows.Forms.Padding(0, 0, 0, 8);
+            this.guna2Button1.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.guna2Button1.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.guna2Button1.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.guna2Button1.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.guna2Button1.FillColor = System.Drawing.Color.Transparent;
+            this.guna2Button1.Font = new System.Drawing.Font("Bahnschrift", 9F);
+            this.guna2Button1.ForeColor = System.Drawing.Color.Black;
+            this.guna2Button1.HoverState.BorderColor = System.Drawing.Color.Navy;
+            this.guna2Button1.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(83)))), ((int)(((byte)(251)))));
+            this.guna2Button1.HoverState.ForeColor = System.Drawing.Color.White;
+            this.guna2Button1.Image = ((System.Drawing.Image)(resources.GetObject("guna2Button1.Image")));
+            this.guna2Button1.ImageOffset = new System.Drawing.Point(-4, 0);
+            this.guna2Button1.Location = new System.Drawing.Point(12, 275);
+            this.guna2Button1.Name = "guna2Button1";
+            this.guna2Button1.Size = new System.Drawing.Size(140, 43);
+            this.guna2Button1.TabIndex = 7;
+            this.guna2Button1.Text = "  Toa thuốc";
+            this.guna2Button1.Click += new System.EventHandler(this.guna2Button1_Click);
             // 
             // btn_doanhthu
             // 
@@ -137,8 +162,8 @@ namespace frm_login
             this.btn_caidat.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(83)))), ((int)(((byte)(251)))));
             this.btn_caidat.HoverState.ForeColor = System.Drawing.Color.White;
             this.btn_caidat.Image = ((System.Drawing.Image)(resources.GetObject("btn_caidat.Image")));
-            this.btn_caidat.ImageOffset = new System.Drawing.Point(-7, 0);
-            this.btn_caidat.Location = new System.Drawing.Point(12, 275);
+            this.btn_caidat.ImageOffset = new System.Drawing.Point(-9, 0);
+            this.btn_caidat.Location = new System.Drawing.Point(12, 324);
             this.btn_caidat.Name = "btn_caidat";
             this.btn_caidat.Size = new System.Drawing.Size(140, 43);
             this.btn_caidat.TabIndex = 4;
@@ -392,5 +417,6 @@ namespace frm_login
         private Guna.UI2.WinForms.Guna2HtmlLabel lbl_val;
         private PictureBox pictureBox_val;
         private Guna.UI2.WinForms.Guna2AnimateWindow guna2AnimateWindow1;
+        private Guna.UI2.WinForms.Guna2Button guna2Button1;
     }
 }

@@ -28,6 +28,7 @@ namespace frm_login
             guna2ShadowForm1.SetShadowForm(this);
             this.FormClosing += new FormClosingEventHandler(frm_saudangnhap_FormClosing);
             ApplicationExitManager.IsExitMessageShown = false;
+
         }
 
 
@@ -51,7 +52,7 @@ namespace frm_login
             pnl_container.Tag = frm;
             frm.Show();
         }
-        private void btn_benhnhan_Click(object sender, EventArgs e)
+        public void btn_benhnhan_Click(object sender, EventArgs e)
         {
             lbl_val.Text = "Danh sách bệnh nhân";
             pictureBox_val.Image = Properties.Resources.benhnhan;
@@ -96,16 +97,25 @@ namespace frm_login
         {
 
             lbl_val.Text = "Doanh Thu";
-            //pictureBox_val.Image = Properties.Resources.doanhhthu;
-            container(new frm_doanhhthu());
+            pictureBox_val.Image = Properties.Resources.doanh_thu;
+            container(new frm_doanhthu());  
 
         }
 
         private void btn_lichhen_Click(object sender, EventArgs e)
         {
             lbl_val.Text = "Lịch hẹn";
-            //pictureBox_val.Image = Properties.Resources.doanhhthu;
+            pictureBox_val.Image = Properties.Resources.lich_newpng;
             container(new frm_lichhen());
         }
+
+        private void guna2Button1_Click(object sender, EventArgs e)
+        {
+            lbl_val.Text = "Toa thuốc";
+            pictureBox_val.Image = Properties.Resources.THUOC;
+            container(new frm_thuoc());
+        }
+
+       
     }
 }

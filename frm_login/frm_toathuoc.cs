@@ -10,16 +10,11 @@ using System.Windows.Forms;
 
 namespace frm_login
 {
-    public partial class frm_doanhhthu : Form
+    public partial class frm_toathuoc : Form
     {
-        public frm_doanhhthu()
+        public frm_toathuoc()
         {
             InitializeComponent();
-        }
-
-        private void frm_doanhhthu_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
