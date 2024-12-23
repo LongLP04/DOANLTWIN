@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace frm_login
 {
@@ -17,51 +18,50 @@ namespace frm_login
         {
             InitializeComponent();
         }
-
+        Model1 db = new Model1();
         private void frm_danhsachbenhnhan_Load(object sender, EventArgs e)
         {
 
             string filePath = "D:\\VISUAL STUDIO\\HocWindowsForm\\PICTURE\\bacsix.png";
 
-            // Kiểm tra và thêm cột nếu cần
-            if (dta_dsbenhnhan.Columns.Count < 8)
-            {
-                dta_dsbenhnhan.Columns.Clear();
-                dta_dsbenhnhan.Columns.Add("STT", "STT");
-                dta_dsbenhnhan.Columns.Add(new DataGridViewImageColumn() { HeaderText = "Hình Ảnh", Name = "imgColumn", ImageLayout = DataGridViewImageCellLayout.Zoom });
-                dta_dsbenhnhan.Columns.Add("HoTen", "Họ Tên");
-                dta_dsbenhnhan.Columns.Add("SDT", "Số Điện Thoại");
-                dta_dsbenhnhan.Columns.Add("DiaChi", "Địa Chỉ");
-                dta_dsbenhnhan.Columns.Add("NgayKham", "Ngày Khám");
-                dta_dsbenhnhan.Columns.Add("NgayTaiKham", "Ngày Tái Khám");
-                dta_dsbenhnhan.Columns.Add("DichVu", "Dịch Vụ");
-            }
-
-            for (int i = 0; i < 10; i++)
-            {
-                dta_dsbenhnhan.Rows.Add();
-
-                if (File.Exists(filePath))
+            dta_dsbenhnhan.AutoGenerateColumns = false;
+            var listBenhNhan = db.BenhNhans
+                .Select(bn => new
                 {
-                    using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-                    {
-                        dta_dsbenhnhan.Rows[i].Cells[1].Value = Image.FromStream(fs);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Không tìm thấy tệp hình ảnh tại đường dẫn: " + filePath, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    dta_dsbenhnhan.Rows[i].Cells[1].Value = null;
-                }
+                    Avatar = bn.Avatar,
+                    BasicInfo = bn.TenBenhNhan,
+                    PhoneNumber = bn.SoDienThoai,
+                    Address = bn.DiaChi,
+                    nextAppointment = bn.LichHens.OrderBy(lh => lh.NgayHenTT).Select(lh => lh.NgayHenTT).FirstOrDefault(), // Lấy lịch hẹn gần nhất
+                    lastAppointment = bn.LichHens.OrderByDescending(lh => lh.NgayHenGN).Select(lh => lh.NgayHenGN).FirstOrDefault(),
+                    
+                    Service = db.DichVus
+                        .Where(dv => dv.MaDichVu == bn.HoaDons.Select(hd => hd.MaDichVu).FirstOrDefault())
+                        .Select(dv => dv.TenDichVu)
+                        .FirstOrDefault()
+                })
+                .ToList();
 
-                dta_dsbenhnhan.Rows[i].Cells[2].Value = "Anh Đức";
-                dta_dsbenhnhan.Rows[i].Cells[3].Value = "0339632131";
-                dta_dsbenhnhan.Rows[i].Cells[4].Value = "BR-VT";
-                dta_dsbenhnhan.Rows[i].Cells[5].Value = "21-10-2024";
-                dta_dsbenhnhan.Rows[i].Cells[6].Value = "21-10-2023";
-                dta_dsbenhnhan.Rows[i].Cells[7].Value = "Lấy tủy";
-            }
+            dta_dsbenhnhan.DataSource = listBenhNhan;
+            dta_dsbenhnhan.Columns["Column3"].DataPropertyName = "BasicInfo";
+            dta_dsbenhnhan.Columns["Column4"].DataPropertyName = "PhoneNumber";
+            dta_dsbenhnhan.Columns["Column5"].DataPropertyName = "Address";
+            dta_dsbenhnhan.Columns["Column6"].DataPropertyName = "nextAppointment";
+            dta_dsbenhnhan.Columns["Column7"].DataPropertyName = "lastAppointment";
+            dta_dsbenhnhan.Columns["Column8"].DataPropertyName = "Service";
+            dta_dsbenhnhan.Columns["Column2"].DataPropertyName = "Avatar";
+
+            dta_dsbenhnhan.Columns["Column1"].Width = 10;
+            dta_dsbenhnhan.Columns["Column2"].Width = 60;
+            dta_dsbenhnhan.Columns["Column3"].Width = 120;
+            dta_dsbenhnhan.Columns["Column4"].Width = 100;
+            dta_dsbenhnhan.Columns["Column5"].Width = 180;
+            dta_dsbenhnhan.Columns["Column6"].Width = 140;
+            dta_dsbenhnhan.Columns["Column7"].Width = 140;
+            dta_dsbenhnhan.Columns["Column8"].Width = 100;
         }
+
+
 
         private void dta_dsbenhnhan_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {

@@ -21,26 +21,44 @@ namespace frm_login
         {
 
         }
-
+        Model1 db = new Model1();
         private void frm_doanhthu_Load(object sender, EventArgs e)
         {
-            // Kiểm tra và thêm cột nếu cần
-            if (dta_doanhthu.Columns.Count < 3)
-            {
-                dta_doanhthu.Columns.Clear();
-                dta_doanhthu.Columns.Add("Type", "Type");
-                dta_doanhthu.Columns.Add("Date", "Date");
-                dta_doanhthu.Columns.Add("Price", "Price");
-            }
+            dta_doanhthu.AutoGenerateColumns = false;
+
 
             // Thêm dữ liệu mẫu
-            for (int i = 0; i < 10; i++)
-            {
-                dta_doanhthu.Rows.Add();
-                dta_doanhthu.Rows[i].Cells[0].Value = "Service " + (i + 1); // Type
-                dta_doanhthu.Rows[i].Cells[1].Value = DateTime.Now.AddDays(-i).ToString("dd-MM-yyyy"); // Date
-                dta_doanhthu.Rows[i].Cells[2].Value = (1000 + i * 500).ToString("C2"); // Price
-            }
+
+            //var doanhThuList = db.HoaDons
+            //     .Join(db.DoanhThus,
+            //           hd => hd.MaDichVu,       // Join HoaDon.MaDichVu với DoanhThu.MaDoanhThu
+            //           dt => dt.MaDoanhThu,
+            //           (hd, dt) => new {
+            //               LoaiDichVu = dt.TenDichVu,
+            //               Ngay = db.LichHens
+            //                          .Where(lh => lh.MaBenhNhan == hd.MaBenhNhan)  // Lọc LichHen theo MaBenhNhan
+            //                          .Select(lh => lh.NgayHenGN)
+            //                          .FirstOrDefault(),  // Lấy NgayHenGN đầu tiên tương ứng
+            //               Gia = dt.Gia
+            //           })
+            //     .ToList();
+            var doanhThuList = db.DoanhThus
+                .Select(dt => new
+                {
+                    Type = dt.TenDichVu,
+                    Date = dt.NgayHoaDon,
+                    Price = dt.Gia
+                })
+                .ToList();
+
+
+            // Gán dữ liệu vào DataGridView
+            dta_doanhthu.DataSource = doanhThuList;
+            dta_doanhthu.Columns["Column1"].DataPropertyName = "Type";
+            dta_doanhthu.Columns["Column2"].DataPropertyName = "Date";
+            dta_doanhthu.Columns["Column3"].DataPropertyName = "Price";
+
+
         }
     }
 }

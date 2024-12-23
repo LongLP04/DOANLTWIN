@@ -22,51 +22,49 @@ namespace frm_login
         {
 
         }
-
+        Model1 db = new Model1();
         private void frm_lichhen_Load(object sender, EventArgs e)
         {
             string filePath = "D:\\VISUAL STUDIO\\QLPKDa\\PICTURE\\THUOC.png";
+            // Gán dữ liệu vào DataGridView mà không thêm cột
+            dta_lichhen.AutoGenerateColumns = false;
 
-            // Kiểm tra và thêm cột nếu cần
-            if (dta_lichhen.Columns.Count < 6)
-            {
-                dta_lichhen.Columns.Clear();
-                dta_lichhen.Columns.Add("STT", "STT");
-                dta_lichhen.Columns.Add(new DataGridViewImageColumn() { HeaderText = "Hình Ảnh", Name = "imgColumn", ImageLayout = DataGridViewImageCellLayout.Zoom });
-                dta_lichhen.Columns.Add("BasicInfo", "Basic Info");
-                dta_lichhen.Columns.Add("Time", "Time");
-                dta_lichhen.Columns.Add("Date", "Date");
-                dta_lichhen.Columns.Add("Service", "Service");
-                dta_lichhen.Columns.Add("Note", "Note");
-            }
-
-            // Thêm dữ liệu mẫu
-            for (int i = 0; i < 10; i++)
-            {
-                dta_lichhen.Rows.Add();
-
-                // Nạp hình ảnh từ tệp
-                if (File.Exists(filePath))
+            // Tạo danh sách dữ liệu
+            var listLichHen = db.LichHens
+                .AsEnumerable()
+                .Select(lh => new
                 {
-                    using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-                    {
-                        dta_lichhen.Rows[i].Cells[1].Value = Image.FromStream(fs);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Không tìm thấy tệp hình ảnh tại đường dẫn: " + filePath, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    dta_lichhen.Rows[i].Cells[1].Value = null;
-                }
+                    Avatar = lh.BenhNhan.Avatar != null ? (Image)(new ImageConverter().ConvertFrom(lh.BenhNhan.Avatar)) : null,
+                    BasicInfo = lh.BenhNhan.TenBenhNhan,
+                    Time = lh.NgayHenTT,
+                    Date = lh.NgayHenGN,
+                    Service = db.DichVus
+                        .Where(dv => dv.MaDichVu == lh.MaDichVu)
+                        .Select(dv => dv.TenDichVu)
+                        .FirstOrDefault(),
 
-                // Thêm các giá trị vào các cột khác
-                dta_lichhen.Rows[i].Cells[0].Value = (i + 1).ToString(); // STT
-                dta_lichhen.Rows[i].Cells[2].Value = "Patient " + (i + 1); // Basic Info
-                dta_lichhen.Rows[i].Cells[3].Value = "10:00 AM"; // Time
-                dta_lichhen.Rows[i].Cells[4].Value = "22-12-2024"; // Date
-                dta_lichhen.Rows[i].Cells[5].Value = "Consultation"; // Service
-                dta_lichhen.Rows[i].Cells[6].Value = "Follow-up required"; // Note
-            }
+                    Note = lh.Ghichu
+                })
+                .ToList();
+
+            // Gán danh sách dữ liệu vào DataGridView
+            dta_lichhen.DataSource = listLichHen;
+
+            // Gán dữ liệu cho từng cột hiện có
+            dta_lichhen.Columns["Column3"].DataPropertyName = "BasicInfo";
+            dta_lichhen.Columns["Column4"].DataPropertyName = "Time";
+            dta_lichhen.Columns["Column5"].DataPropertyName = "Date";
+            dta_lichhen.Columns["Column6"].DataPropertyName = "Service";
+            dta_lichhen.Columns["Column7"].DataPropertyName = "Note";
+            dta_lichhen.Columns["Column2"].DataPropertyName = "Avatar";
+
+            dta_lichhen.Columns["Column1"].Width = 10;
+            dta_lichhen.Columns["Column2"].Width = 50;  // Cột Avatar có độ rộng 100
+            dta_lichhen.Columns["Column3"].Width = 150;  // Cột BasicInfo có độ rộng 150
+            dta_lichhen.Columns["Column4"].Width = 160;  // Cột Time có độ rộng 120
+            dta_lichhen.Columns["Column5"].Width = 160;  // Cột Date có độ rộng 120
+            dta_lichhen.Columns["Column6"].Width = 90;  // Cột Service có độ rộng 150
+            dta_lichhen.Columns["Column7"].Width = 200;
         }
     }
 }

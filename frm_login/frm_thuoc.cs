@@ -22,51 +22,60 @@ namespace frm_login
         {
 
         }
+        Model1 db = new Model1();
 
         private void frm_thuoc_Load(object sender, EventArgs e)
         {
             string filePath = "D:\\VISUAL STUDIO\\QLPKDa\\PICTURE\\THUOC.png";
 
-            // Kiểm tra và thêm cột nếu cần
-            if (dta_thuoc.Columns.Count < 6)
-            {
-                dta_thuoc.Columns.Clear();
-                dta_thuoc.Columns.Add("STT", "STT");
-                dta_thuoc.Columns.Add(new DataGridViewImageColumn() { HeaderText = "Hình Ảnh", Name = "imgColumn", ImageLayout = DataGridViewImageCellLayout.Zoom });
-                dta_thuoc.Columns.Add("BasicInfo", "Basic Info");
-                dta_thuoc.Columns.Add("Appointment", "Appointment");
-                dta_thuoc.Columns.Add("Service", "Service");
-                dta_thuoc.Columns.Add("Medicine", "Medicine");
-                dta_thuoc.Columns.Add("Price", "Price");
-            }
+            dta_thuoc.AutoGenerateColumns = false;
 
-            // Thêm dữ liệu mẫu
-            for (int i = 0; i < 10; i++)
-            {
-                dta_thuoc.Rows.Add();
-
-                // Nạp hình ảnh từ tệp
-                if (File.Exists(filePath))
+            var listThuoc = db.Thuoc_
+                .Join(db.ToaThuocs, thuoc => thuoc.MaToa, toa => toa.MaToa, (thuoc, toa) => new { thuoc, toa })
+                .Join(db.HoaDons, combined => combined.toa.MaHoaDon, hoaDon => hoaDon.MaHoaDon, (combined, hoaDon) => new { combined, hoaDon })
+                .Join(db.BenhNhans, combinedHoaDon => combinedHoaDon.hoaDon.MaBenhNhan, benhNhan => benhNhan.MaBenhNhan, (combinedHoaDon, benhNhan) => new
                 {
-                    using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-                    {
-                        dta_thuoc.Rows[i].Cells[1].Value = Image.FromStream(fs);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Không tìm thấy tệp hình ảnh tại đường dẫn: " + filePath, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    dta_thuoc.Rows[i].Cells[1].Value = null;
-                }
+                    TenThuoc = combinedHoaDon.combined.thuoc.TenThuoc,
+                    Gia = combinedHoaDon.combined.thuoc.Gia,
+                    LieuLuon = combinedHoaDon.combined.toa.LieuLuon,
+                    SoLuong = combinedHoaDon.combined.toa.SoLuong,
+                    Ghichu = combinedHoaDon.hoaDon.GhiChu,
+                    TenBenhNhan = benhNhan.TenBenhNhan,
+                    Avatar = benhNhan.Avatar,
+                    LichHen = benhNhan.LichHens
+                        .Select(lh => lh.NgayHenTT)
+                        .FirstOrDefault(),
+                    DichVu = db.DichVus
+            .Where(dv => dv.MaDichVu == combinedHoaDon.hoaDon.MaDichVu)
+            .Select(dv => dv.TenDichVu)
+            .FirstOrDefault()
+                })
+                .ToList();
 
-                // Thêm các giá trị vào các cột khác
-                dta_thuoc.Rows[i].Cells[0].Value = (i + 1).ToString(); // STT
-                dta_thuoc.Rows[i].Cells[2].Value = "John Doe"; // Basic Info
-                dta_thuoc.Rows[i].Cells[3].Value = "22-12-2024"; // Appointment
-                dta_thuoc.Rows[i].Cells[4].Value = "Consultation"; // Service
-                dta_thuoc.Rows[i].Cells[5].Value = "Paracetamol"; // Medicine
-                dta_thuoc.Rows[i].Cells[6].Value = "$15"; // Price
-            }
+
+            // Gán danh sách dữ liệu vào DataGridView
+            dta_thuoc.DataSource = listThuoc;
+
+            // Gán dữ liệu cho từng cột hiện có
+            dta_thuoc.Columns["Column3"].DataPropertyName = "TenBenhNhan";
+            dta_thuoc.Columns["Column4"].DataPropertyName = "LichHen";
+            dta_thuoc.Columns["Column5"].DataPropertyName = "DichVu";
+            dta_thuoc.Columns["Column6"].DataPropertyName = "TenThuoc";
+            dta_thuoc.Columns["Column7"].DataPropertyName = "Gia";
+            dta_thuoc.Columns["Column8"].DataPropertyName = "Ghichu";
+            dta_thuoc.Columns["Column2"].DataPropertyName = "Avatar";
+
+            dta_thuoc.Columns["Column1"].Width = 10;
+            dta_thuoc.Columns["Column2"].Width = 50;  
+            dta_thuoc.Columns["Column3"].Width = 100;  
+            dta_thuoc.Columns["Column4"].Width = 160;  
+            dta_thuoc.Columns["Column5"].Width = 80; 
+            dta_thuoc.Columns["Column6"].Width = 90;  
+            dta_thuoc.Columns["Column7"].Width = 80;
+            dta_thuoc.Columns["Column8"].Width = 220;
+
+
+
         }
     }
 }
