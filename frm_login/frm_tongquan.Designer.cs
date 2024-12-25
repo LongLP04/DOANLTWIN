@@ -747,6 +747,7 @@
             this.Name = "frm_tongquan";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frm_tongquan";
+            this.Load += new System.EventHandler(this.frm_tongquan_Load);
             this.guna2ShadowPanel1.ResumeLayout(false);
             this.guna2Panel3.ResumeLayout(false);
             this.guna2Panel1.ResumeLayout(false);

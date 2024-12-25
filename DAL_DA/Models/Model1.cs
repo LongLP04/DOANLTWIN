@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
 
-namespace frm_login
+namespace DAL_DA.Models
 {
     public partial class Model1 : DbContext
     {
@@ -14,10 +14,10 @@ namespace frm_login
 
         public virtual DbSet<BenhNhan> BenhNhans { get; set; }
         public virtual DbSet<DichVu> DichVus { get; set; }
+        public virtual DbSet<DoanhThu> DoanhThus { get; set; }
         public virtual DbSet<HoaDon> HoaDons { get; set; }
         public virtual DbSet<LichHen> LichHens { get; set; }
         public virtual DbSet<Thuoc_> Thuoc_ { get; set; }
-        public DbSet<DoanhThu> DoanhThus { get; set; }
         public virtual DbSet<ToaThuoc> ToaThuocs { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -46,10 +46,14 @@ namespace frm_login
                 .IsFixedLength()
                 .IsUnicode(false);
 
-            //modelBuilder.Entity<DichVu>()
-            //    .Property(e => e.MaHoaDon)
-            //    .IsFixedLength()
-            //    .IsUnicode(false);
+            modelBuilder.Entity<DoanhThu>()
+                .Property(e => e.MaDoanhThu)
+                .IsFixedLength()
+                .IsUnicode(false);
+
+            modelBuilder.Entity<DoanhThu>()
+                .Property(e => e.Gia)
+                .HasPrecision(18, 0);
 
             modelBuilder.Entity<HoaDon>()
                 .Property(e => e.MaHoaDon)
@@ -62,9 +66,9 @@ namespace frm_login
                 .IsUnicode(false);
 
             modelBuilder.Entity<HoaDon>()
-                .HasMany(e => e.DichVus)
-                .WithRequired(e => e.HoaDon)
-                .WillCascadeOnDelete(false);
+                .Property(e => e.MaDichVu)
+                .IsFixedLength()
+                .IsUnicode(false);
 
             modelBuilder.Entity<HoaDon>()
                 .HasMany(e => e.ToaThuocs)

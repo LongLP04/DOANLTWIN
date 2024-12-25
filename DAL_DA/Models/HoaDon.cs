@@ -1,4 +1,4 @@
-namespace frm_login
+namespace DAL_DA.Models
 {
     using System;
     using System.Collections.Generic;
@@ -12,7 +12,6 @@ namespace frm_login
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public HoaDon()
         {
-            DichVus = new HashSet<DichVu>();
             ToaThuocs = new HashSet<ToaThuoc>();
         }
 
@@ -27,14 +26,12 @@ namespace frm_login
         [StringLength(50)]
         public string MaBenhNhan { get; set; }
 
-        public virtual BenhNhan BenhNhan { get; set; }
-        //public string MaDichVu { get; set; }
+        [StringLength(50)]
+        public string MaDichVu { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DichVu> DichVus { get; set; }
+        public virtual BenhNhan BenhNhan { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ToaThuoc> ToaThuocs { get; set; }
-        public string MaDichVu { get; internal set; }
     }
 }

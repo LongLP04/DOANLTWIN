@@ -1,4 +1,4 @@
-namespace frm_login
+namespace DAL_DA.Models
 {
     using System;
     using System.Collections.Generic;
@@ -27,6 +27,8 @@ namespace frm_login
         public string SoDienThoai { get; set; }
 
         public byte[] Avatar { get; set; }
+
+        [StringLength(255)]
         public string DiaChi { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -1,70 +1,113 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Data.SqlClient;
+    using System.Drawing;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
+    using DAL_DA.Models;
 
-namespace frm_login
-{
-    public partial class frm_lichhen : Form
+    namespace frm_login
     {
-        public frm_lichhen()
+        public partial class frm_lichhen : Form
         {
-            InitializeComponent();
+            public frm_lichhen()
+            {
+                InitializeComponent();
+            }
+
+            private void dta_lichhen_CellContentClick(object sender, DataGridViewCellEventArgs e)
+            {
+
+            }
+            private void frm_lichhen_Load(object sender, EventArgs e)
+            {
+              LoadData();
+
+            }
+        private void LoadData()
+        {
+            // Xóa phần try-catch nếu bạn không gặp lỗi khi tải dữ liệu
+            using (var db = new Model1())
+            {
+                dta_lichhen.AutoGenerateColumns = false;
+
+                // Truy vấn dữ liệu từ cơ sở dữ liệu
+                var data = (from lh in db.LichHens
+                            join bn in db.BenhNhans on lh.MaBenhNhan equals bn.MaBenhNhan
+                            join hd in db.HoaDons on lh.MaBenhNhan equals hd.MaBenhNhan into hdJoin
+                            from hd in hdJoin.DefaultIfEmpty()
+                            join dv in db.DichVus on hd.MaDichVu equals dv.MaDichVu into dvJoin
+                            from dv in dvJoin.DefaultIfEmpty()
+                            select new
+                            {
+                                lh.MaLichHen,
+                                Avatar = bn.Avatar,  // Đảm bảo Avatar có dữ liệu
+                                TenBenhNhan = bn.TenBenhNhan,
+                                NgayHenTT = lh.NgayHenTT,
+                                NgayHenGN = lh.NgayHenGN,
+                                TenDichVu = dv != null ? dv.TenDichVu : "Không có dịch vụ",
+                                lh.Ghichu
+                            }).ToList();
+
+                // Gán dữ liệu vào DataGridView
+                dta_lichhen.DataSource = data;
+
+                // Sau khi gán dữ liệu vào DataGridView, xử lý hình ảnh
+                ProcessAvatarImages();
+            }
         }
-
-        private void dta_lichhen_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void ProcessAvatarImages()
         {
-
-        }
-        Model1 db = new Model1();
-        private void frm_lichhen_Load(object sender, EventArgs e)
-        {
-            string filePath = "D:\\VISUAL STUDIO\\QLPKDa\\PICTURE\\THUOC.png";
-            // Gán dữ liệu vào DataGridView mà không thêm cột
-            dta_lichhen.AutoGenerateColumns = false;
-
-            // Tạo danh sách dữ liệu
-            var listLichHen = db.LichHens
-                .AsEnumerable()
-                .Select(lh => new
+            // Xử lý hiển thị hình ảnh cho mỗi dòng
+            foreach (DataGridViewRow row in dta_lichhen.Rows)
+            {
+                if (row.Cells[1] != null && row.Cells[1].Value != null)
                 {
-                    Avatar = lh.BenhNhan.Avatar != null ? (Image)(new ImageConverter().ConvertFrom(lh.BenhNhan.Avatar)) : null,
-                    BasicInfo = lh.BenhNhan.TenBenhNhan,
-                    Time = lh.NgayHenTT,
-                    Date = lh.NgayHenGN,
-                    Service = db.DichVus
-                        .Where(dv => dv.MaDichVu == lh.MaDichVu)
-                        .Select(dv => dv.TenDichVu)
-                        .FirstOrDefault(),
+                    byte[] imageBytes = row.Cells[1].Value as byte[];
 
-                    Note = lh.Ghichu
-                })
-                .ToList();
+                    // Kiểm tra nếu byte[] hợp lệ
+                    if (imageBytes != null && imageBytes.Length > 0)
+                    {
+                        try
+                        {
+                            using (MemoryStream ms = new MemoryStream(imageBytes))
+                            {
+                                // Kiểm tra nếu byte[] có phải là hình ảnh hợp lệ
+                                Image img = Image.FromStream(ms);
+                                row.Cells[1].Value = img;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            // Nếu có lỗi khi chuyển đổi byte[] thành hình ảnh
+                            MessageBox.Show($"Lỗi khi xử lý hình ảnh cho MaLichHen {row.Cells["MaLichHen"].Value}: {ex.Message}",
+                                "Lỗi Hình Ảnh", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-            // Gán danh sách dữ liệu vào DataGridView
-            dta_lichhen.DataSource = listLichHen;
+                            // Gán hình ảnh mặc định nếu có lỗi
+                            row.Cells[1].Value = Properties.Resources.THUOC; // Hình ảnh mặc định
+                        }
+                    }
+                    else
+                    {
 
-            // Gán dữ liệu cho từng cột hiện có
-            dta_lichhen.Columns["Column3"].DataPropertyName = "BasicInfo";
-            dta_lichhen.Columns["Column4"].DataPropertyName = "Time";
-            dta_lichhen.Columns["Column5"].DataPropertyName = "Date";
-            dta_lichhen.Columns["Column6"].DataPropertyName = "Service";
-            dta_lichhen.Columns["Column7"].DataPropertyName = "Note";
-            dta_lichhen.Columns["Column2"].DataPropertyName = "Avatar";
+                        row.Cells[1].Value = Properties.Resources.THUOC; // Hình ảnh mặc định
+                    }
+                }
+            }
+        }
 
-            dta_lichhen.Columns["Column1"].Width = 10;
-            dta_lichhen.Columns["Column2"].Width = 50;  // Cột Avatar có độ rộng 100
-            dta_lichhen.Columns["Column3"].Width = 150;  // Cột BasicInfo có độ rộng 150
-            dta_lichhen.Columns["Column4"].Width = 160;  // Cột Time có độ rộng 120
-            dta_lichhen.Columns["Column5"].Width = 160;  // Cột Date có độ rộng 120
-            dta_lichhen.Columns["Column6"].Width = 90;  // Cột Service có độ rộng 150
-            dta_lichhen.Columns["Column7"].Width = 200;
+
+
+        private void guna2Panel1_Paint(object sender, PaintEventArgs e)
+            {
+
+            }
+
+
         }
     }
-}

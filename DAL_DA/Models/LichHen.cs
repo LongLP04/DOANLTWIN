@@ -1,4 +1,4 @@
-namespace frm_login
+namespace DAL_DA.Models
 {
     using System;
     using System.Collections.Generic;
@@ -16,8 +16,6 @@ namespace frm_login
         public DateTime? NgayHenTT { get; set; }
 
         public DateTime? NgayHenGN { get; set; }
-        [StringLength(50)]
-        public string MaDichVu { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -26,7 +24,9 @@ namespace frm_login
         [StringLength(1000)]
         public string Ghichu { get; set; }
 
+        [StringLength(50)]
+        public string MaDichVu { get; set; }
+
         public virtual BenhNhan BenhNhan { get; set; }
-        public virtual DichVu DichVu { get; set; }
     }
 }

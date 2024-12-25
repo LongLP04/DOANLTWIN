@@ -49,6 +49,9 @@ namespace frm_login
           
         }
 
-       
+        private void frm_tongquan_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

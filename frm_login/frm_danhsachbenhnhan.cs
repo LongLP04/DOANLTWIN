@@ -8,62 +8,110 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DAL_DA.Models;
 using static System.Net.Mime.MediaTypeNames;
-
+using BUS_DA;
+using System.Data.Entity;
+using DrawingImage = System.Drawing.Image;
 namespace frm_login
 {
     public partial class frm_danhsachbenhnhan : Form
     {
+        private readonly benhnhanService benhnhanServices = new benhnhanService();
         public frm_danhsachbenhnhan()
         {
             InitializeComponent();
         }
-        Model1 db = new Model1();
         private void frm_danhsachbenhnhan_Load(object sender, EventArgs e)
         {
+            Loaddata();
 
-            string filePath = "D:\\VISUAL STUDIO\\HocWindowsForm\\PICTURE\\bacsix.png";
 
-            dta_dsbenhnhan.AutoGenerateColumns = false;
-            var listBenhNhan = db.BenhNhans
-                .Select(bn => new
+        }
+        public void  Loaddata()
+        {
+            try
+            {
+                // Tắt tự động tạo cột
+                dta_dsbenhnhan.AutoGenerateColumns = false;
+
+                // Lấy danh sách bệnh nhân từ dịch vụ
+                List<BenhNhan> benhNhans = benhnhanServices.GetAll();
+
+                // Kiểm tra nếu danh sách rỗng hoặc null
+                if (benhNhans == null || !benhNhans.Any())
                 {
-                    Avatar = bn.Avatar,
-                    BasicInfo = bn.TenBenhNhan,
-                    PhoneNumber = bn.SoDienThoai,
-                    Address = bn.DiaChi,
-                    nextAppointment = bn.LichHens.OrderBy(lh => lh.NgayHenTT).Select(lh => lh.NgayHenTT).FirstOrDefault(), // Lấy lịch hẹn gần nhất
-                    lastAppointment = bn.LichHens.OrderByDescending(lh => lh.NgayHenGN).Select(lh => lh.NgayHenGN).FirstOrDefault(),
-                    
-                    Service = db.DichVus
-                        .Where(dv => dv.MaDichVu == bn.HoaDons.Select(hd => hd.MaDichVu).FirstOrDefault())
-                        .Select(dv => dv.TenDichVu)
-                        .FirstOrDefault()
-                })
-                .ToList();
+                    MessageBox.Show("Không có dữ liệu bệnh nhân để hiển thị.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
 
-            dta_dsbenhnhan.DataSource = listBenhNhan;
-            dta_dsbenhnhan.Columns["Column3"].DataPropertyName = "BasicInfo";
-            dta_dsbenhnhan.Columns["Column4"].DataPropertyName = "PhoneNumber";
-            dta_dsbenhnhan.Columns["Column5"].DataPropertyName = "Address";
-            dta_dsbenhnhan.Columns["Column6"].DataPropertyName = "nextAppointment";
-            dta_dsbenhnhan.Columns["Column7"].DataPropertyName = "lastAppointment";
-            dta_dsbenhnhan.Columns["Column8"].DataPropertyName = "Service";
-            dta_dsbenhnhan.Columns["Column2"].DataPropertyName = "Avatar";
+                // Gán dữ liệu cho DataGridView
+                dta_dsbenhnhan.DataSource = benhNhans;
 
-            dta_dsbenhnhan.Columns["Column1"].Width = 10;
-            dta_dsbenhnhan.Columns["Column2"].Width = 60;
-            dta_dsbenhnhan.Columns["Column3"].Width = 120;
-            dta_dsbenhnhan.Columns["Column4"].Width = 100;
-            dta_dsbenhnhan.Columns["Column5"].Width = 180;
-            dta_dsbenhnhan.Columns["Column6"].Width = 140;
-            dta_dsbenhnhan.Columns["Column7"].Width = 140;
-            dta_dsbenhnhan.Columns["Column8"].Width = 100;
+                // Duyệt từng hàng để thiết lập dữ liệu vào các cột
+                foreach (DataGridViewRow row in dta_dsbenhnhan.Rows)
+                {
+                    if (row.DataBoundItem is BenhNhan benhNhan)
+                    {
+                        // Gán mã bệnh nhân
+                        if (dta_dsbenhnhan.Columns.Contains("ID"))
+                            row.Cells["ID"].Value = benhNhan.MaBenhNhan;
+
+                        // Xử lý Avatar
+                        if (dta_dsbenhnhan.Columns.Contains("Avatar"))
+                        {
+                            row.Cells["Avatar"].Value = benhNhan.Avatar != null && benhNhan.Avatar.Length > 0
+                                ? ConvertByteArrayToImage(benhNhan.Avatar)
+                                : Properties.Resources.THUOC; // Ảnh mặc định
+                        }
+
+                        // Gán thông tin cơ bản
+                        if (dta_dsbenhnhan.Columns.Contains("BasicInfo"))
+                            row.Cells["BasicInfo"].Value = benhNhan.TenBenhNhan;
+
+                        if (dta_dsbenhnhan.Columns.Contains("Phone"))
+                            row.Cells["Phone"].Value = benhNhan.SoDienThoai;
+
+                        if (dta_dsbenhnhan.Columns.Contains("Address"))
+                            row.Cells["Address"].Value = benhNhan.DiaChi;
+                    }
+                }
+
+                // Ẩn các cột không cần thiết
+                if (dta_dsbenhnhan.Columns.Contains("ColumnHoaDon"))
+                    dta_dsbenhnhan.Columns["ColumnHoaDon"].Visible = false;
+
+                if (dta_dsbenhnhan.Columns.Contains("ColumnDichVu"))
+                    dta_dsbenhnhan.Columns["ColumnDichVu"].Visible = false;
+
+                // Làm mới DataGridView
+                dta_dsbenhnhan.Refresh();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Có lỗi xảy ra: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+
         }
 
+        private System.Drawing.Image ConvertByteArrayToImage(byte[] byteArray)
+        {
+            if (byteArray == null || byteArray.Length == 0)
+                return null;
 
+            using (MemoryStream ms = new MemoryStream(byteArray))
+            {
+                return System.Drawing.Image.FromStream(ms);
+            }
+        }
 
         private void dta_dsbenhnhan_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void guna2Panel1_Paint(object sender, PaintEventArgs e)
         {
 
         }

@@ -154,18 +154,21 @@
             // 
             // Column1
             // 
+            this.Column1.DataPropertyName = "TenDichVu";
             this.Column1.HeaderText = "Type";
             this.Column1.MinimumWidth = 6;
             this.Column1.Name = "Column1";
             // 
             // Column2
             // 
+            this.Column2.DataPropertyName = "NgayHoaDon";
             this.Column2.HeaderText = "Date";
             this.Column2.MinimumWidth = 6;
             this.Column2.Name = "Column2";
             // 
             // Column3
             // 
+            this.Column3.DataPropertyName = "Gia";
             this.Column3.HeaderText = "Price";
             this.Column3.MinimumWidth = 6;
             this.Column3.Name = "Column3";

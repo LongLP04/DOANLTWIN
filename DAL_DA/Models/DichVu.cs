@@ -1,4 +1,4 @@
-namespace frm_login
+namespace DAL_DA.Models
 {
     using System;
     using System.Collections.Generic;
@@ -18,10 +18,5 @@ namespace frm_login
 
         public decimal? Gia { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public string MaHoaDon { get; set; }
-        [ForeignKey("MaHoaDon")]
-        public virtual HoaDon HoaDon { get; set; }
     }
 }

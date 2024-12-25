@@ -37,7 +37,7 @@
             this.guna2Button3 = new Guna.UI2.WinForms.Guna2Button();
             this.guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.Avatar = new System.Windows.Forms.DataGridViewImageColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -64,7 +64,7 @@
             this.dta_lichhen.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
             this.dta_lichhen.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
-            this.Column2,
+            this.Avatar,
             this.Column3,
             this.Column4,
             this.Column5,
@@ -79,12 +79,12 @@
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dta_lichhen.DefaultCellStyle = dataGridViewCellStyle3;
             this.dta_lichhen.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(245)))), ((int)(((byte)(250)))));
-            this.dta_lichhen.Location = new System.Drawing.Point(23, 107);
+            this.dta_lichhen.Location = new System.Drawing.Point(34, 111);
             this.dta_lichhen.Name = "dta_lichhen";
             this.dta_lichhen.RowHeadersVisible = false;
             this.dta_lichhen.RowHeadersWidth = 51;
             this.dta_lichhen.RowTemplate.Height = 50;
-            this.dta_lichhen.Size = new System.Drawing.Size(976, 440);
+            this.dta_lichhen.Size = new System.Drawing.Size(976, 438);
             this.dta_lichhen.TabIndex = 2;
             this.dta_lichhen.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White;
             this.dta_lichhen.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -117,6 +117,7 @@
             this.guna2Panel1.Name = "guna2Panel1";
             this.guna2Panel1.Size = new System.Drawing.Size(1022, 65);
             this.guna2Panel1.TabIndex = 3;
+            this.guna2Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.guna2Panel1_Paint);
             // 
             // btn_sua
             // 
@@ -173,21 +174,24 @@
             // 
             // Column1
             // 
+            this.Column1.DataPropertyName = "MaLichHen";
             this.Column1.FillWeight = 37.43314F;
             this.Column1.HeaderText = "";
             this.Column1.MinimumWidth = 6;
             this.Column1.Name = "Column1";
             // 
-            // Column2
+            // Avatar
             // 
-            this.Column2.FillWeight = 149.1708F;
-            this.Column2.HeaderText = "";
-            this.Column2.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
-            this.Column2.MinimumWidth = 6;
-            this.Column2.Name = "Column2";
+            this.Avatar.DataPropertyName = "Avatar";
+            this.Avatar.FillWeight = 149.1708F;
+            this.Avatar.HeaderText = "";
+            this.Avatar.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
+            this.Avatar.MinimumWidth = 6;
+            this.Avatar.Name = "Avatar";
             // 
             // Column3
             // 
+            this.Column3.DataPropertyName = "TenBenhNhan";
             this.Column3.FillWeight = 102.6792F;
             this.Column3.HeaderText = "Basic info";
             this.Column3.MinimumWidth = 6;
@@ -195,20 +199,23 @@
             // 
             // Column4
             // 
+            this.Column4.DataPropertyName = "NgayHenTT";
             this.Column4.FillWeight = 102.6792F;
-            this.Column4.HeaderText = "Time";
+            this.Column4.HeaderText = "Next";
             this.Column4.MinimumWidth = 6;
             this.Column4.Name = "Column4";
             // 
             // Column5
             // 
+            this.Column5.DataPropertyName = "NgayHenGN";
             this.Column5.FillWeight = 102.6792F;
-            this.Column5.HeaderText = "Date";
+            this.Column5.HeaderText = "Last";
             this.Column5.MinimumWidth = 6;
             this.Column5.Name = "Column5";
             // 
             // Column6
             // 
+            this.Column6.DataPropertyName = "TenDichVu";
             this.Column6.FillWeight = 102.6792F;
             this.Column6.HeaderText = "Service";
             this.Column6.MinimumWidth = 6;
@@ -216,6 +223,7 @@
             // 
             // Column7
             // 
+            this.Column7.DataPropertyName = "Ghichu";
             this.Column7.FillWeight = 102.6792F;
             this.Column7.HeaderText = "Note";
             this.Column7.MinimumWidth = 6;
@@ -248,7 +256,7 @@
         private Guna.UI2.WinForms.Guna2Button guna2Button3;
         private Guna.UI2.WinForms.Guna2Button guna2Button1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewImageColumn Column2;
+        private System.Windows.Forms.DataGridViewImageColumn Avatar;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
